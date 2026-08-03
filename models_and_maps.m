@@ -167,10 +167,22 @@ all_diag_basis := function(N);
     C := CuspForms(N);
     g := Dimension(C);
 
+    // All Atkin-Lehner involutions (returned below, diagonalized).
     al_inds := [ m : m in Divisors(N) | GCD(m,N div m) eq 1 and m gt 1];
-    al_invols := [AtkinLehnerOperator(C,d) : d in al_inds];
 
-    T, new_als := simul_diag(al_invols);
+    // Diagonalize using only the prime-power GENERATORS of the Atkin-Lehner
+    // group.  They generate the whole group, so the simultaneous eigenspaces
+    // (and hence the +1 "star" space) are identical, but simul_diag then avoids
+    // the 2^#al_inds subspace blowup that made high-omega levels (e.g. N=870)
+    // take hours instead of seconds.
+    gens := [ p^Valuation(N,p) : p in PrimeDivisors(N) ];
+    al_gens := [AtkinLehnerOperator(C,d) : d in gens];
+    T := simul_diag(al_gens);
+
+    // Return every AL involution, diagonalized in the same basis T (each w_m is
+    // a product of generators, so T diagonalizes it too).
+    new_als := [T*AtkinLehnerOperator(C,d)*T^(-1) : d in al_inds];
+
     B := Basis(C);
     cleardenom := LCM([Denominator(x) : x in Eltseq(T)]);
     NB := [&+[cleardenom*T[i,j]*B[j] : j in [1..g]] : i in [1..g]];
