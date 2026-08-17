@@ -983,8 +983,8 @@ assert w103(P6) eq P6c;
 K<T> := QuadraticField(2885);
 
 P7seq := [3*T, T, 461, 196, 78, 25, 8, 1];
-P7 := X(K) ! P6seq;
-P7c := X(K) ! conj(P6seq);
+P7 := X(K) ! P7seq;
+P7c := X(K) ! conj(P7seq);
 jP7 := j(P7)[1];
 assert jP7 eq -669908635472124980731701532753920*T + 35982263935929364331785036841779200;
 tf := HasComplexMultiplication(EllipticCurveWithjInvariant(jP7));

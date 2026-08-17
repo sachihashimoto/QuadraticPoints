@@ -268,7 +268,7 @@ MWSieve := function(X, AtkinLehner, genusC, primes, A, divs, Dpull, B0, iA0, W0,
 		printf "The number of possible cosets unknown points can land in is %o.\n", #W;
 
 		if W eq [] then
-			return true;
+			return B, iA, W;
 		end if;
 		
 		//this is actually our goal
@@ -396,11 +396,13 @@ AL_sieve := function(N : d := N, nonpullbacks := {}, badPrimes := {})
 
 	B, iA, W := MWSieve(XN, wdMatrix, genusC, primes, A, divs, bp, B0, iA0, W0, deg2);
 
-	printf "\nFor unknown Q in X_0(%o)^2(\Q) we have (1 - w_%o)[Q - bp] is in a coset of %o represented by an element of %o.\n", N, N, B, W;
+	printf "\nFor unknown Q in X_0(%o)^2(\Q) we have (1 - w_%o)[Q - bp] is in a coset of %o represented by an element of %o.\n", N, d, B, W;
 
-	if #W eq 1 and IsIdentity(W[1]) then
+	if #W eq 0 then
+		printf "There are no possible cosets left, so there is no unknown Q in X_0(%o)^2(\Q).\n", N;
+	elif #W eq 1 and IsIdentity(W[1]) then
 		printf "It follows that if there is an unknown Q in X_0(%o)^2(\Q), then (1 - w_%o)[Q - bp] == 0.\n", N, d;
-		printf "This implies that [Q - bp] is fixed by w_%o\n", N;
+		printf "This implies that [Q - bp] is fixed by w_%o\n", d;
 		printf "Then Q ~ w_%o(Q), which implies that Q = w_%o(Q) because X_0(%o) is not hyperelliptic.\n", d, d, N;
 		printf "Then either Q is a pullback, or it is fixed by w_%o pointwise.\n", d;
 		printf "If P = (X_i) is fixed by w_%o,\n", d;

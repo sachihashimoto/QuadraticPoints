@@ -30,7 +30,10 @@ simple_rank := function(A);
          else if Dimension(A) eq 1 then   // we have an elliptic curve and we try to compute the rank directly
                  E := EllipticCurve(A);
                  rk,ell_tf := Rank(E);
-                 assert ell_tf eq true;
+                 if not ell_tf then
+                    rk := -1000;
+                    tf := false;
+                 end if;
               else rk := -1000;
                    tf := false;
               end if;

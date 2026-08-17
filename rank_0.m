@@ -52,12 +52,14 @@ rank_0_quad_pts :=function(N)
 		// and is therefore (morally) a basis for the cuspidal  
 		// subgroup of J(\Q).
 
-	//the following two lines are to make sure that we are not assuming generalized ogg's conjecture
-	if N eq 80 then 
-		I:=4; 
-	end if;
-	if N eq 98 or N eq 100 then 
+	//the following lines are to make sure that we are not assuming generalized ogg's conjecture
+	if N eq 80 then
+		I:=4;
+	elif N eq 98 or N eq 100 then
 		I:=1;
+	else
+		error "rank_0_quad_pts: no sieve exponent I (avoiding generalized Ogg's conjecture) is known for N =", N,
+			"; I is only worked out for N in {80, 98, 100}.";
 	end if;
 
 	//here starts the sieve part
