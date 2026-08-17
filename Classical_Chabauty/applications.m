@@ -685,7 +685,8 @@ zeros_on_disk:=function(P1,P2,v,data:prec:=0,e:=1,integral:=[**]);
   tinyP2toz,xt,bt,NP2toz:=tiny_integrals_on_basis_to_z(P2,data:prec:=prec);
 
   Nv:=Precision(Parent(v[1][1]));
-  Zp:=pAdicRing(p,Nv);
+  Nwork:=Minimum([Nv, NIP1P2, NP2toz]);
+  Zp:=pAdicRing(p,Nwork);
   Zpt:=PolynomialRing(Zp);
 
   zerolist:=[];
