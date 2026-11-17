@@ -44,6 +44,19 @@ end function;
 
 ////////////////////////////////
 
+// The second return value of PointsOverSplittingField is an algebraically
+// closed field object in older versions of Magma and a number field (or Q) in
+// newer ones. This returns the absolute field in either case.
+
+absolute_splitting_field := function(L);
+    if Type(L) eq FldAC then
+        return NumberField(AbsolutePolynomial(L));
+    end if;
+    return NumberField(DefiningPolynomial(AbsoluteField(L)));
+end function;
+
+////////////////////////////////
+
 // We now look at the main function, "pullback_points"
 
 // Input:
@@ -74,7 +87,7 @@ pullback_points := function(X, pairs, N, bound);
             S := Pullback(rho,R); // The pullback scheme (including base scheme)
             D := Difference(S, BS); // The pullback scheme (not including base scheme)
             pb, K1 := PointsOverSplittingField(D);
-            K := NumberField(AbsolutePolynomial(K1));
+            K := absolute_splitting_field(K1);
             if Degree(K) eq 2 then // we look for a nicer defining polynomial for K
                 d := Discriminant(Integers(K));
                 if (d mod 4) eq 0 then
@@ -92,7 +105,7 @@ pullback_points := function(X, pairs, N, bound);
                 radS := Scheme(AmbientSpace(S), Radical(Ideal(S)));
                 D := Difference(radS, radBS);
                 pb, K1 := PointsOverSplittingField(D);
-                K := NumberField(AbsolutePolynomial(K1));
+                K := absolute_splitting_field(K1);
                 if Degree(K) eq 2 then // we look for a nicer defining polynomial for K
                     d := Discriminant(Integers(K));
                     if (d mod 4) eq 0 then
